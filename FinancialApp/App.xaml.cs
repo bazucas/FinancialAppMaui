@@ -4,11 +4,9 @@ namespace FinancialApp;
 
 public partial class App
 {
-    public App()
+    public App(TransactionList listPage)
     {
         InitializeComponent();
-
-        //MainPage = new AppShell();
-        MainPage = new TransactionList();
+        MainPage = new NavigationPage(listPage);
     }
 }

@@ -6,22 +6,40 @@
     <VerticalStackLayout Spacing="10">
         <Border BackgroundColor="Black" Margin="15" Stroke="Transparent" Padding="15" StrokeShape="RoundRectangle 30">
             <Grid RowDefinitions="Auto" ColumnDefinitions="*,30">
-                <Label Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" Text="New" TextColor="White"/>
-                <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" Text="X" TextColor="White"/>
+
+                <Label 
+                    Grid.Row="0" 
+                    Grid.Column="0" 
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center" 
+                    Text="New" 
+                    TextColor="White"/>
+                <Image 
+                    Grid.Row="0" 
+                    Grid.Column="1" 
+                    HorizontalOptions="Center" 
+                    Source="close.png"
+                    WidthRequest="17">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped" />
+                    </Image.GestureRecognizers>
+                </Image>
             </Grid>
         </Border>
+
+        <Label Margin="30,0" x:Name="LabelError" TextColor="Red" IsVisible="False"></Label>
+
         <Grid ColumnDefinitions="*,*" Margin="30,0">
-            <RadioButton IsChecked="True" Content="Income"></RadioButton>
-            <RadioButton HorizontalOptions="End" Grid.Column="1" Content="Expense"></RadioButton>
+            <RadioButton x:Name="RadioIncome" IsChecked="True" Content="Income"></RadioButton>
+            <RadioButton x:Name="RadioExpense" HorizontalOptions="End" Grid.Column="1" Content="Expense"></RadioButton>
         </Grid>
-
-        <Entry Placeholder="Name" Margin="15,0"/>
-
-        <DatePicker Margin="15,0"/>
-
-        <Entry Placeholder="Amount" Margin="15,0"/>
-
-        <Button Text="Save" Margin="15,0" HorizontalOptions="Center"/>
-
+        <Entry x:Name="EntryName" Placeholder="Name" Margin="15,0"/>
+        <DatePicker x:Name="DatePickerDate" Margin="15,0"/>
+        <Entry x:Name="EntryValue" Placeholder="Amount" Margin="15,0"/>
+        <Button 
+            Text="Save" 
+            Margin="15,0" 
+            HorizontalOptions="Center"
+            Clicked="Button_OnClicked_SaveInDb"/>
     </VerticalStackLayout>
 </ContentPage>

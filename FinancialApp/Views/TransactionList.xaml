@@ -2,14 +2,91 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinancialApp.Views.TransactionList"
-             Title="TransactionList">
+             Title="List"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary Source="/Resources/Styles/Colors.xaml"/>
+    </ContentPage.Resources>
+
     <VerticalStackLayout>
-        <Label 
-            Text="TRANSACTION LIST"
-            VerticalOptions="Center" 
+
+        <CollectionView x:Name="CollectionView">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="15" ColumnDefinitions="50, *, Auto" >
+                        <Label 
+                            Text="S" 
+                            VerticalOptions="Center" 
+                            HorizontalOptions="Center" 
+                            BackgroundColor="White"
+                            FontSize="24"/>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="{Binding Name}" />
+                            <Label Text="{Binding Date, StringFormat='{0:dd/MM/yyyy}'}" TextColor="#BABABA" />
+                        </VerticalStackLayout>
+                        <Label 
+                            Grid.Column="2" 
+                            Text="{Binding Value,StringFormat='{0:C}'}" 
+                            VerticalOptions="Center"
+                            TextColor="{StaticResource Tertiary}"/>
+                        <!--TextColor="{DynamicResource Tertiary}"/>-->
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Grid Padding="15" ColumnDefinitions="50, *, Auto" >
+            <Label 
+                Text="S" 
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" 
+                BackgroundColor="White"
+                FontSize="24"/>
+            <VerticalStackLayout Grid.Column="1">
+                <Label Text="Salary" />
+                <Label Text="30/10/2024" TextColor="#BABABA" />
+            </VerticalStackLayout>
+            <Label 
+                Grid.Column="2" 
+                Text="$5.000,00" 
+                VerticalOptions="Center"
+                TextColor="{StaticResource Tertiary}"/>
+            <!--TextColor="{DynamicResource Tertiary}"/>-->
+        </Grid>
+
+        <Button 
+            Text="Edit" 
+            Clicked="OnButtonClicked_To_TransactionEdit" 
             HorizontalOptions="Center" />
 
-        <Button Text="+" Clicked="OnButtonClicked_To_TransactionAdd" />
-        <Button Text="Edit" Clicked="OnButtonClicked_To_TransactionEdit" />
+        <Border 
+            Margin="10" 
+            BackgroundColor="Black" 
+            StrokeThickness="0"
+            Padding="15"
+            StrokeShape="RoundRectangle 30">
+            <Grid 
+                ColumnDefinitions="*, 80"
+                RowDefinitions="Auto, Auto, 30, Auto, Auto">
+                <Label Text="Balance" FontSize="18" TextColor="#979797"/>
+                <Label Text="$2.420,00" FontSize="36" Grid.Row="1" TextColor="White"/>
+                <Button 
+                    Text="+" 
+                    Clicked="OnButtonClicked_To_TransactionAdd" 
+                    HorizontalOptions="Center"
+                    Grid.Column="1" 
+                    Grid.RowSpan="2"
+                    WidthRequest="54"
+                    HeightRequest="54"
+                    FontSize="48"
+                    Padding="0"
+                    CornerRadius="27"/>
+                <Label Text="Income" FontSize="8" Grid.Row="3" TextColor="#979797"/>
+                <Label Text="$3.640,00" FontSize="12" Grid.Row="4" TextColor="White"/>
+
+                <Label Text="Expenses" FontSize="8" Grid.Row="3" Grid.Column="1" TextColor="#979797"/>
+                <Label Text="$1.220,00" FontSize="12" Grid.Row="4" Grid.Column="1" TextColor="White"/>
+            </Grid>
+        </Border>
     </VerticalStackLayout>
 </ContentPage>
