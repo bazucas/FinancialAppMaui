@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.Messaging;
 using FinancialApp.Models;
 using FinancialApp.Repositories;
 using System.Globalization;
@@ -41,6 +42,8 @@ public partial class TransactionAdd : ContentPage
             SaveTransactionInDatabase();
 
             await Navigation.PopModalAsync();
+
+            WeakReferenceMessenger.Default.Send("update");
 
             var totalEntries = _transactionRepo.GetAll().Count;
 

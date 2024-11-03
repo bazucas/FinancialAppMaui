@@ -35,24 +35,6 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <Grid Padding="15" ColumnDefinitions="50, *, Auto" >
-            <Label 
-                Text="S" 
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" 
-                BackgroundColor="White"
-                FontSize="24"/>
-            <VerticalStackLayout Grid.Column="1">
-                <Label Text="Salary" />
-                <Label Text="30/10/2024" TextColor="#BABABA" />
-            </VerticalStackLayout>
-            <Label 
-                Grid.Column="2" 
-                Text="$5.000,00" 
-                VerticalOptions="Center"
-                TextColor="{StaticResource Tertiary}"/>
-            <!--TextColor="{DynamicResource Tertiary}"/>-->
-        </Grid>
 
         <Button 
             Text="Edit" 
@@ -68,8 +50,16 @@
             <Grid 
                 ColumnDefinitions="*, 80"
                 RowDefinitions="Auto, Auto, 30, Auto, Auto">
-                <Label Text="Balance" FontSize="18" TextColor="#979797"/>
-                <Label Text="$2.420,00" FontSize="36" Grid.Row="1" TextColor="White"/>
+                <Label 
+                    Text="Balance" 
+                    FontSize="18" 
+                    TextColor="#979797"/>
+                <Label 
+                    Text="$2.420,00" 
+                    FontSize="36" 
+                    Grid.Row="1" 
+                    x:Name="LabelBalance"
+                    TextColor="White"/>
                 <Button 
                     Text="+" 
                     Clicked="OnButtonClicked_To_TransactionAdd" 
@@ -81,11 +71,31 @@
                     FontSize="48"
                     Padding="0"
                     CornerRadius="27"/>
-                <Label Text="Income" FontSize="8" Grid.Row="3" TextColor="#979797"/>
-                <Label Text="$3.640,00" FontSize="12" Grid.Row="4" TextColor="White"/>
+                <Label 
+                    Text="Income" 
+                    FontSize="8" 
+                    Grid.Row="3" 
+                    TextColor="#979797"/>
+                <Label 
+                    Text="$3.640,00" 
+                    FontSize="12" 
+                    Grid.Row="4" 
+                    x:Name="LabelIncome"
+                    TextColor="White"/>
 
-                <Label Text="Expenses" FontSize="8" Grid.Row="3" Grid.Column="1" TextColor="#979797"/>
-                <Label Text="$1.220,00" FontSize="12" Grid.Row="4" Grid.Column="1" TextColor="White"/>
+                <Label 
+                    Text="Expenses" 
+                    FontSize="8" 
+                    Grid.Row="3" 
+                    Grid.Column="1" 
+                    TextColor="#979797"/>
+                <Label 
+                    Text="$1.220,00" 
+                    FontSize="12" 
+                    Grid.Row="4" 
+                    Grid.Column="1" 
+                    x:Name="LabelExpenses"
+                    TextColor="White"/>
             </Grid>
         </Border>
     </VerticalStackLayout>

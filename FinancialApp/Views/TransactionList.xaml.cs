@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.Messaging;
 using FinancialApp.Repositories;
 
 namespace FinancialApp.Views;
@@ -5,12 +6,29 @@ namespace FinancialApp.Views;
 public partial class TransactionList : ContentPage
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly ITransactionRepository _repository;
 
     public TransactionList(IServiceProvider serviceProvider, ITransactionRepository repository)
     {
         _serviceProvider = serviceProvider;
+        _repository = repository;
         InitializeComponent();
-        CollectionView.ItemsSource = repository.GetAll();
+        Reload();
+        WeakReferenceMessenger.Default.Register<string>(this, (e, msg) => Reload());
+    }
+
+    private void Reload()
+    {
+        var items = _repository.GetAll();
+        CollectionView.ItemsSource = items;
+
+        var income = items.Where(a => a.Type == Models.TransactionType.Income).Sum(a => a.Value);
+        var expenses = items.Where(a => a.Type == Models.TransactionType.Expenses).Sum(a => a.Value);
+        var balance = income - expenses;
+
+        LabelIncome.Text = income.ToString("C");
+        LabelExpenses.Text = expenses.ToString("C");
+        LabelBalance.Text = balance.ToString("C");
     }
 
     private async void OnButtonClicked_To_TransactionAdd(object? sender, EventArgs e)
@@ -58,5 +76,4 @@ public partial class TransactionList : ContentPage
             await DisplayAlert("Error", "An unexpected error occurred while navigating to the edit page.", "OK");
         }
     }
-
 }
