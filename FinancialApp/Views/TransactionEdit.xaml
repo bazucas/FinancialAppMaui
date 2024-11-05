@@ -23,18 +23,25 @@
                     </Image.GestureRecognizers>
                 </Image>            </Grid>
         </Border>
+
+        <Label 
+            Margin="30,0" 
+            x:Name="LabelError" 
+            TextColor="{AppThemeBinding Light=Red, Dark='#F37474'}" 
+            IsVisible="False"></Label>
+
         <Grid ColumnDefinitions="*,*" Margin="30,0">
-            <RadioButton IsChecked="True" Content="Income"></RadioButton>
-            <RadioButton HorizontalOptions="End" Grid.Column="1" Content="Expense"></RadioButton>
+            <RadioButton x:Name="RadioIncome" IsChecked="True" Content="Income"></RadioButton>
+            <RadioButton x:Name="RadioExpenses" HorizontalOptions="End" Grid.Column="1" Content="Expense"></RadioButton>
         </Grid>
 
-        <Entry Placeholder="Name" Margin="15,0"/>
+        <Entry x:Name="EntryName" Placeholder="Name" Margin="15,0"/>
 
-        <DatePicker Margin="15,0"/>
+        <DatePicker x:Name="DatePickerDate" Margin="15,0"/>
 
-        <Entry Placeholder="Amount" Margin="15,0"/>
+        <Entry x:Name="EntryValue" Placeholder="Amount" Margin="15,0"/>
 
-        <Button Text="Save" Margin="15,0" HorizontalOptions="Center"/>
+        <Button Text="Save" Margin="15,0" HorizontalOptions="Center" Clicked="Button_OnClicked_UpdateDb"/>
 
     </VerticalStackLayout>
 </ContentPage>

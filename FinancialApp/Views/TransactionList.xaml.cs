@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Messaging;
+using FinancialApp.Models;
 using FinancialApp.Repositories;
 
 namespace FinancialApp.Views;
@@ -54,13 +55,19 @@ public partial class TransactionList : ContentPage
         }
     }
 
-    private async void OnButtonClicked_To_TransactionEdit(object? sender, EventArgs e)
+    private async void TapGestureRecognizer_OnTapped_ToTransactionEdit(object? sender, TappedEventArgs e)
     {
         try
         {
             var editPage = _serviceProvider.GetService<TransactionEdit>();
+
             if (editPage != null)
             {
+                var grid = (Grid)sender;
+                var gesture = (TapGestureRecognizer)grid.GestureRecognizers[0];
+                var transaction = (Transaction)gesture.CommandParameter;
+
+                editPage.SetTransactionToEdit(transaction);
                 await Navigation.PushModalAsync(editPage);
             }
             else
@@ -74,6 +81,52 @@ public partial class TransactionList : ContentPage
             // Log the exception and show an error message to the user
             Console.WriteLine($"Exception occurred: {ex.Message}");
             await DisplayAlert("Error", "An unexpected error occurred while navigating to the edit page.", "OK");
+        }
+    }
+
+    private async void TapGestureRecognizer_OnTapped_ToDeleteTransaction(object? sender, TappedEventArgs e)
+    {
+        await AnimationBorder((Border)sender, true);
+        var result = await App.Current.MainPage.DisplayAlert("Delete", "Are you sure you want to delete entry?", "Yes", "No");
+
+        if (result)
+        {
+            var transaction = (Transaction)e.Parameter;
+            _repository.Delete(transaction);
+
+            Reload();
+        }
+        else
+        {
+            await AnimationBorder((Border)sender, false);
+
+        }
+    }
+
+    private Color _borderOriginalBackgroundColor;
+    private string _labelOriginalText;
+
+    private async Task AnimationBorder(Border border, bool IsDeleteAnimation)
+    {
+        var label = (Label)border.Content;
+
+        if (IsDeleteAnimation)
+        {
+            _borderOriginalBackgroundColor = border.BackgroundColor;
+            _labelOriginalText = label.Text;
+            await border.RotateYTo(90, 500);
+            border.BackgroundColor = Colors.Red;
+            label.TextColor = Colors.White;
+            label.Text = "X";
+            await border.RotateYTo(180, 500);
+        }
+        else
+        {
+            await border.RotateYTo(90, 500);
+            label.TextColor = Colors.Black;
+            label.Text = _labelOriginalText;
+            border.BackgroundColor = _borderOriginalBackgroundColor;
+            await border.RotateYTo(0, 500);
         }
     }
 }

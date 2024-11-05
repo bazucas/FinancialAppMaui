@@ -3,10 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinancialApp.Views.TransactionList"
              Title="List"
+             xmlns:converters="clr-namespace:FinancialApp.Libs.Converters"
              NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Resources>
         <ResourceDictionary Source="/Resources/Styles/Colors.xaml"/>
+        <ResourceDictionary>
+            <converters:TransactionValueConverter x:Key="TransactionValueConverter"/>
+            <converters:TransactionValueColorConverter x:Key="TransactionValueColorConverter"/>
+            <converters:TransactionNameConverter x:Key="TransactionNameConverter"/>
+            <converters:TransactionNameColorConverter x:Key="TransactionNameColorConverter"/>
+        </ResourceDictionary>
     </ContentPage.Resources>
 
     <VerticalStackLayout>
@@ -15,31 +22,38 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="15" ColumnDefinitions="50, *, Auto" >
-                        <Label 
-                            Text="S" 
-                            VerticalOptions="Center" 
-                            HorizontalOptions="Center" 
-                            BackgroundColor="White"
-                            FontSize="24"/>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="TapGestureRecognizer_OnTapped_ToTransactionEdit"/>
+                        </Grid.GestureRecognizers>
+                        <Border
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            StrokeThickness="0"
+                            BackgroundColor="{Binding Name, Converter={StaticResource TransactionNameColorConverter}}"
+                            StrokeShape="RoundRectangle 20">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="TapGestureRecognizer_OnTapped_ToDeleteTransaction"/>
+                            </Border.GestureRecognizers>
+                            <Label 
+                                VerticalOptions="Center" 
+                                HorizontalOptions="Center" 
+                                FontSize="20"
+                                Text="{Binding Name, Converter={StaticResource TransactionNameConverter}}" />
+                        </Border>
                         <VerticalStackLayout Grid.Column="1">
                             <Label Text="{Binding Name}" />
                             <Label Text="{Binding Date, StringFormat='{0:dd/MM/yyyy}'}" TextColor="#BABABA" />
                         </VerticalStackLayout>
                         <Label 
                             Grid.Column="2" 
-                            Text="{Binding Value,StringFormat='{0:C}'}" 
+                            Text="{Binding ., Converter={StaticResource TransactionValueConverter}}" 
                             VerticalOptions="Center"
-                            TextColor="{StaticResource Tertiary}"/>
+                            TextColor="{Binding ., Converter={StaticResource TransactionValueColorConverter}}"/>
                         <!--TextColor="{DynamicResource Tertiary}"/>-->
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-
-        <Button 
-            Text="Edit" 
-            Clicked="OnButtonClicked_To_TransactionEdit" 
-            HorizontalOptions="Center" />
 
         <Border 
             Margin="10" 
@@ -55,7 +69,6 @@
                     FontSize="18" 
                     TextColor="#979797"/>
                 <Label 
-                    Text="$2.420,00" 
                     FontSize="36" 
                     Grid.Row="1" 
                     x:Name="LabelBalance"
@@ -68,7 +81,7 @@
                     Grid.RowSpan="2"
                     WidthRequest="54"
                     HeightRequest="54"
-                    FontSize="48"
+                    FontSize="{OnPlatform Default=48, Android=36}"
                     Padding="0"
                     CornerRadius="27"/>
                 <Label 
@@ -77,7 +90,6 @@
                     Grid.Row="3" 
                     TextColor="#979797"/>
                 <Label 
-                    Text="$3.640,00" 
                     FontSize="12" 
                     Grid.Row="4" 
                     x:Name="LabelIncome"
@@ -90,7 +102,6 @@
                     Grid.Column="1" 
                     TextColor="#979797"/>
                 <Label 
-                    Text="$1.220,00" 
                     FontSize="12" 
                     Grid.Row="4" 
                     Grid.Column="1" 

@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Messaging;
+using FinancialApp.Libs.Utils;
 using FinancialApp.Models;
 using FinancialApp.Repositories;
 using System.Globalization;
@@ -8,11 +9,11 @@ namespace FinancialApp.Views;
 
 public partial class TransactionAdd : ContentPage
 {
-    private readonly ITransactionRepository _transactionRepo;
+    private readonly ITransactionRepository _repository;
 
     public TransactionAdd(ITransactionRepository transactionRepo)
     {
-        _transactionRepo = transactionRepo;
+        _repository = transactionRepo;
         InitializeComponent();
     }
 
@@ -20,6 +21,7 @@ public partial class TransactionAdd : ContentPage
     {
         try
         {
+            KeyboardBugFixAndroid.HideKeyboard();
             await Navigation.PopModalAsync();
         }
         catch (Exception ex)
@@ -41,14 +43,16 @@ public partial class TransactionAdd : ContentPage
 
             SaveTransactionInDatabase();
 
+            KeyboardBugFixAndroid.HideKeyboard();
+
             await Navigation.PopModalAsync();
 
             WeakReferenceMessenger.Default.Send("update");
 
-            var totalEntries = _transactionRepo.GetAll().Count;
+            var totalEntries = _repository.GetAll().Count;
 
             // Show success message
-            await App.Current.MainPage.DisplayAlert("Message", $"Transaction entries - {totalEntries}", "Ok");
+            //await App.Current.MainPage.DisplayAlert("Message", $"Transaction entries - {totalEntries}", "Ok");
         }
         catch (Exception ex)
         {
@@ -67,10 +71,10 @@ public partial class TransactionAdd : ContentPage
                 Name = EntryName.Text,
                 Date = DatePickerDate.Date,
                 Type = RadioIncome.IsChecked ? TransactionType.Income : TransactionType.Expenses,
-                Value = decimal.Parse(EntryValue.Text, CultureInfo.InvariantCulture)
+                Value = Math.Abs(decimal.Parse(EntryValue.Text, CultureInfo.InvariantCulture))
             };
 
-            _transactionRepo.Add(transaction);
+            _repository.Add(transaction);
         }
         catch (FormatException ex)
         {

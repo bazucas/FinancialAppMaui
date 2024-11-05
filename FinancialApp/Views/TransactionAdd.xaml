@@ -27,7 +27,11 @@
             </Grid>
         </Border>
 
-        <Label Margin="30,0" x:Name="LabelError" TextColor="Red" IsVisible="False"></Label>
+        <Label 
+            Margin="30,0" 
+            x:Name="LabelError" 
+            TextColor="{AppThemeBinding Light=Red, Dark='#F37474'}" 
+            IsVisible="False"></Label>
 
         <Grid ColumnDefinitions="*,*" Margin="30,0">
             <RadioButton x:Name="RadioIncome" IsChecked="True" Content="Income"></RadioButton>
